@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Личный кабинет - MedLearn</title>
+    <link rel="stylesheet" href="/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Медицинские факты на фоне -->
+    <div class="medical-facts-bg">
+        <div class="medical-fact">Мозг потребляет глюкозу в качестве основного источника энергии</div>
+        <div class="medical-fact">Человеческое тело состоит на 60% из воды</div>
+        <div class="medical-fact">В теле человека 206 костей и более 600 мышц</div>
+        <div class="medical-fact">Легкие взрослого человека содержат около 2400 км дыхательных путей</div>
+        <div class="medical-fact">Кожа является самым большим органом человеческого тела</div>
+    </div>
+
+    <!-- Навигация -->
+    <nav class="navbar">
+        <div class="navbar-content">
+                        <a href="dashboard.html" class="logo" style="text-decoration: none; color: inherit;">🏥 MedLearn</a>
+            <div class="nav-links">
+                <a href="testing.html">Тестирование</a>
+                <a href="resources.html">Ресурсы</a>
+                <a href="subscription.html">Подписка</a>
+                <a href="profile.html">Профиль</a>
+                <button onclick="logout()" class="btn btn-secondary">Выйти</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="app-container">
+        <div class="page-header">
+            <h1>👋 Добро пожаловать, <span id="userName">Студент</span>!</h1>
+            <p>Ваш персональный кабинет для отслеживания прогресса в изучении медицины</p>
+        </div>
+
+        <div class="content-wrapper">
+            <!-- Статистика -->
+            <div class="grid grid-4" style="margin-bottom: 2rem;">
+                <div class="card">
+                    <div class="card-body" style="text-align: center;">
+                        <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">📊</div>
+                        <h3 style="color: var(--primary-color); font-size: 2rem; margin-bottom: 0.5rem;" id="totalTests">0</h3>
+                        <p style="color: var(--text-secondary);">Пройдено тестов</p>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-body" style="text-align: center;">
+                        <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">🎯</div>
+                        <h3 style="color: var(--success-color); font-size: 2rem; margin-bottom: 0.5rem;" id="averageScore">0%</h3>
+                        <p style="color: var(--text-secondary);">Средний балл</p>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-body" style="text-align: center;">
+                        <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">🏆</div>
+                        <h3 style="color: var(--warning-color); font-size: 2rem; margin-bottom: 0.5rem;" id="achievements">0</h3>
+                        <p style="color: var(--text-secondary);">Достижений</p>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-body" style="text-align: center;">
+                        <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">📚</div>
+                        <h3 style="color: var(--secondary-color); font-size: 2rem; margin-bottom: 0.5rem;" id="studyDays">0</h3>
+                        <p style="color: var(--text-secondary);">Дней обучения</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-2">
+                <!-- График прогресса -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">📈 Прогресс обучения</h2>
+                        <p class="card-subtitle">Ваши результаты за последние тесты</p>
+                    </div>
+                    <div class="card-body">
+                        <div id="progressChart" style="height: 200px; display: flex; align-items: center; justify-content: center; color: var(--text-light);">
+                            График будет загружен после прохождения тестов
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Последние достижения -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">🏆 Достижения</h2>
+                        <p class="card-subtitle">Ваши последние награды</p>
+                    </div>
+                    <div class="card-body">
+                        <div id="achievementsList">
+                            <div style="text-align: center; color: var(--text-light); padding: 2rem;">
+                                Пройдите первый тест, чтобы получить достижения!
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Быстрые действия -->
+            <div class="card" style="margin-top: 2rem;">
+                <div class="card-header">
+                    <h2 class="card-title">🚀 Быстрые действия</h2>
+                    <p class="card-subtitle">Продолжите обучение</p>
+                </div>
+                <div class="card-body">
+                    <div class="grid grid-3">
+                        <div class="feature-card" onclick="window.location.href='testing.html'" style="cursor: pointer;">
+                            <div class="feature-icon">📝</div>
+                            <h3>Пройти тест</h3>
+                            <p>Проверьте свои знания по любой медицинской дисциплине</p>
+                        </div>
+                        
+                        <div class="feature-card" onclick="window.location.href='resources.html'" style="cursor: pointer;">
+                            <div class="feature-icon">📖</div>
+                            <h3>Изучить материалы</h3>
+                            <p>Посмотрите учебные ресурсы и расширьте знания</p>
+                        </div>
+                        
+                        <div class="feature-card" onclick="window.location.href='subscription.html'" style="cursor: pointer;">
+                            <div class="feature-icon">⭐</div>
+                            <h3>Улучшить план</h3>
+                            <p>Получите доступ к AI-ассистенту и расширенным функциям</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Профиль пользователя -->
+            <div class="card" style="margin-top: 2rem;">
+                <div class="card-header">
+                    <h2 class="card-title">👤 Профиль</h2>
+                    <p class="card-subtitle">Ваша информация</p>
+                </div>
+                <div class="card-body">
+                    <div class="grid grid-2" style="align-items: start;">
+                        <div>
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input type="email" id="userEmail" readonly style="background: var(--bg-secondary);">
+                            </div>
+                            <div class="form-group">
+                                <label>Имя</label>
+                                <input type="text" id="userFirstName" readonly style="background: var(--bg-secondary);">
+                            </div>
+                            <div class="form-group">
+                                <label>Фамилия</label>
+                                <input type="text" id="userLastName" readonly style="background: var(--bg-secondary);">
+                            </div>
+                        </div>
+                        <div>
+                            <div class="form-group">
+                                <label>Дата регистрации</label>
+                                <input type="text" id="registrationDate" readonly style="background: var(--bg-secondary);">
+                            </div>
+                            <div class="form-group">
+                                <label>Статус подписки</label>
+                                <input type="text" id="subscriptionStatus" readonly style="background: var(--bg-secondary);">
+                            </div>
+                            <div class="form-group">
+                                <label>Роль</label>
+                                <input type="text" id="userRole" readonly style="background: var(--bg-secondary);">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/client.js"></script>
+    <script>
+        let currentUser = null;
+
+        // Инициализация личного кабинета
+        document.addEventListener('DOMContentLoaded', function() {
+            checkAuth();
+            loadDashboardData();
+        });
+
+        // Загрузка всех данных дэшборда
+        async function loadDashboardData() {
+            console.log('🏠 Загружаем данные дэшборда...');
+            
+            try {
+                await Promise.all([
+                    loadUserProfile(),
+                    loadUserStats(),
+                    loadAchievements()
+                ]);
+                
+                // Проверяем роль пользователя для отображения админ функций
+                checkAdminAccess();
+            } catch (error) {
+                console.error('❌ Ошибка загрузки дэшборда:', error);
+            }
+        }
+
+        // Загрузка профиля пользователя
+        async function loadUserProfile() {
+            try {
+                console.log('👤 Загружаем профиль для дэшборда...');
+                
+                const token = localStorage.getItem('token');
+                if (!token) return;
+                
+                const response = await fetch('/api/user/profile', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                if (response.ok) {
+                    const user = await response.json();
+                    currentUser = user;
+                    console.log('✅ Профиль загружен:', user.email, 'Роль:', user.role);
+                    
+                    // Заполняем данные профиля
+                    document.getElementById('userName').textContent = 
+                        user.first_name ? `${user.first_name} ${user.last_name || ''}`.trim() : 'Студент';
+                    
+                    document.getElementById('userEmail').value = user.email || '';
+                    document.getElementById('userFirstName').value = user.first_name || '';
+                    document.getElementById('userLastName').value = user.last_name || '';
+                    document.getElementById('registrationDate').value = 
+                        user.created_at ? new Date(user.created_at).toLocaleDateString('ru-RU') : '';
+                    document.getElementById('subscriptionStatus').value = user.is_premium ? 'Премиум' : 'Базовая';
+                    document.getElementById('userRole').value = user.role || 'student';
+                } else {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+            } catch (error) {
+                console.error('❌ Ошибка загрузки профиля:', error);
+            }
+        }
+
+        // Загрузка статистики пользователя
+        async function loadUserStats() {
+            try {
+                console.log('📊 Загружаем статистику для дэшборда...');
+                
+                const token = localStorage.getItem('token');
+                if (!token) return;
+                
+                const response = await fetch('/api/user/stats', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                if (response.ok) {
+                    const stats = await response.json();
+                    console.log('✅ Статистика загружена:', stats);
+                    
+                    // Анимированное обновление статистики
+                    animateStatNumber('totalTests', stats.tests_taken || 0);
+                    animateStatNumber('averageScore', Math.round(stats.average_score || 0), '%');
+                    animateStatNumber('studyDays', stats.study_days || 0);
+                    
+                    // Обновляем график прогресса
+                    updateProgressChart(stats.weekly_activity || []);
+                } else {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+            } catch (error) {
+                console.error('❌ Ошибка загрузки статистики:', error);
+                // Показываем заглушки при ошибке
+                ['totalTests', 'averageScore', 'studyDays'].forEach(id => {
+                    const element = document.getElementById(id);
+                    if (element) element.textContent = 'н/д';
+                });
+            }
+        }
+
+        // Загрузка достижений
+        async function loadAchievements() {
+            try {
+                console.log('🏆 Загружаем достижения...');
+                
+                const token = localStorage.getItem('token');
+                if (!token) return;
+                
+                const response = await fetch('/api/user/stats', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                if (response.ok) {
+                    const stats = await response.json();
+                    const achievements = stats.achievements || [];
+                    console.log('✅ Достижения загружены:', achievements.length);
+                    
+                    const container = document.getElementById('achievementsList');
+                    
+                    if (achievements.length === 0) {
+                        container.innerHTML = `
+                            <div style="text-align: center; color: var(--text-secondary); padding: 2rem;">
+                                <div style="font-size: 2rem; margin-bottom: 1rem;">🏆</div>
+                                <p>Пройдите первый тест, чтобы получить достижения!</p>
+                                <a href="testing.html" class="btn btn-primary" style="margin-top: 1rem; display: inline-block;">
+                                    🚀 Начать тестирование
+                                </a>
+                            </div>
+                        `;
+                    } else {
+                        const latestAchievements = achievements.slice(-5); // Последние 5 достижений
+                        container.innerHTML = latestAchievements.map(achievement => `
+                            <div style="
+                                display: flex;
+                                align-items: center;
+                                padding: 0.75rem;
+                                margin-bottom: 0.5rem;
+                                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                                color: white;
+                                border-radius: 8px;
+                                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                            ">
+                                <span style="font-size: 1.5rem; margin-right: 1rem;">${achievement.icon}</span>
+                                <div>
+                                    <div style="font-weight: 600;">${achievement.name}</div>
+                                    <div style="font-size: 0.85rem; opacity: 0.9;">${achievement.description}</div>
+                                </div>
+                            </div>
+                        `).join('');
+                        
+                        if (achievements.length > 5) {
+                            container.innerHTML += `
+                                <div style="text-align: center; margin-top: 1rem;">
+                                    <a href="profile.html" style="color: var(--primary-color); text-decoration: none; font-size: 0.9rem;">
+                                        Посмотреть все ${achievements.length} достижений →
+                                    </a>
+                                </div>
+                            `;
+                        }
+                    }
+                } else {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+            } catch (error) {
+                console.error('❌ Ошибка загрузки достижений:', error);
+                document.getElementById('achievementsList').innerHTML = `
+                    <div style="text-align: center; color: var(--text-secondary); padding: 2rem;">
+                        <div style="color: #ef4444;">❌ Не удалось загрузить достижения</div>
+                    </div>
+                `;
+            }
+        }
+
+        // Анимация чисел для статистики
+        function animateStatNumber(elementId, targetValue, suffix = '') {
+            const element = document.getElementById(elementId);
+            if (!element) return;
+            
+            const startValue = 0;
+            const duration = 1500;
+            const startTime = Date.now();
+            
+            function updateNumber() {
+                const elapsed = Date.now() - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                
+                const easeProgress = 1 - Math.pow(1 - progress, 3);
+                const currentValue = Math.floor(startValue + (targetValue - startValue) * easeProgress);
+                
+                element.textContent = currentValue + suffix;
+                
+                if (progress < 1) {
+                    requestAnimationFrame(updateNumber);
+                }
+            }
+            
+            updateNumber();
+        }
+
+        // Обновление графика прогресса
+        function updateProgressChart(weeklyActivity) {
+            const container = document.getElementById('progressChart');
+            
+            if (!weeklyActivity || weeklyActivity.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; color: var(--text-secondary);">
+                        <div style="font-size: 2rem; margin-bottom: 1rem;">📈</div>
+                        <p>График появится после прохождения тестов</p>
+                        <a href="testing.html" class="btn btn-primary" style="margin-top: 1rem; display: inline-block;">
+                            📝 Пройти первый тест
+                        </a>
+                    </div>
+                `;
+                return;
+            }
+            
+            // Простая визуализация активности за неделю
+            const maxTests = Math.max(...weeklyActivity.map(day => day.tests_count));
+            const chartHtml = weeklyActivity.map((day, index) => {
+                const height = maxTests > 0 ? (day.tests_count / maxTests) * 100 : 0;
+                const date = new Date(day.test_date);
+                const dayName = date.toLocaleDateString('ru-RU', { weekday: 'short' });
+                
+                return `
+                    <div style="
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        flex: 1;
+                        margin: 0 0.25rem;
+                    ">
+                        <div style="
+                            height: 120px;
+                            display: flex;
+                            align-items: end;
+                            margin-bottom: 0.5rem;
+                        ">
+                            <div style="
+                                width: 20px;
+                                height: ${height}%;
+                                background: linear-gradient(135deg, #667eea, #764ba2);
+                                border-radius: 4px 4px 0 0;
+                                min-height: ${day.tests_count > 0 ? '10px' : '2px'};
+                            " title="${day.tests_count} тестов, средний балл ${Math.round(day.avg_score || 0)}%"></div>
+                        </div>
+                        <div style="font-size: 0.8rem; color: var(--text-secondary);">${dayName}</div>
+                        <div style="font-size: 0.75rem; font-weight: 600; color: var(--primary-color);">${day.tests_count}</div>
+                    </div>
+                `;
+            }).join('');
+            
+            container.innerHTML = `
+                <div style="display: flex; align-items: end; height: 100%; padding: 1rem;">
+                    ${chartHtml}
+                </div>
+                <div style="text-align: center; margin-top: 0.5rem; font-size: 0.85rem; color: var(--text-secondary);">
+                    Активность за последние 7 дней
+                </div>
+            `;
+        }
+
+        // Проверка доступа к админ панели
+        function checkAdminAccess() {
+            if (currentUser && (currentUser.role === 'admin' || currentUser.role === 'teacher')) {
+                console.log('👑 Пользователь имеет доступ к админ панели');
+                showAdminActions();
+            }
+        }
+
+        // Показать админские действия
+        function showAdminActions() {
+            // Найдем секцию быстрых действий и добавим админские кнопки
+            const quickActionsGrid = document.querySelector('.card-body .grid.grid-3');
+            if (quickActionsGrid) {
+                const adminCard = `
+                    <div class="feature-card" onclick="openAdminPanel()" style="cursor: pointer; border: 2px solid #f59e0b;">
+                        <div class="feature-icon" style="color: #f59e0b;">⚙️</div>
+                        <h3 style="color: #f59e0b;">Админ панель</h3>
+                        <p>Управление системой и пользователями</p>
+                    </div>
+                `;
+                quickActionsGrid.innerHTML += adminCard;
+            }
+            
+            // Добавим индикатор админа в шапку
+            const navbar = document.querySelector('.nav-links');
+            if (navbar && !document.getElementById('adminIndicator')) {
+                const adminIndicator = document.createElement('span');
+                adminIndicator.id = 'adminIndicator';
+                adminIndicator.innerHTML = '👑 Админ';
+                adminIndicator.style.cssText = `
+                    background: linear-gradient(135deg, #f59e0b, #d97706);
+                    color: white;
+                    padding: 0.25rem 0.75rem;
+                    border-radius: 20px;
+                    font-size: 0.85rem;
+                    font-weight: 600;
+                    margin-right: 1rem;
+                `;
+                navbar.insertBefore(adminIndicator, navbar.firstChild);
+            }
+        }
+
+        // Открытие админ панели
+        function openAdminPanel() {
+            console.log('⚙️ Переход в админ панель...');
+            window.open('http://localhost:3002', '_blank');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Подписки - MedLearn</title>
+    <link rel="stylesheet" href="/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Медицинские факты на фоне -->
+    <div class="medical-facts-bg">
+        <div class="medical-fact">Антибиотики неэффективны против вирусных инфекций</div>
+        <div class="medical-fact">Человеческий организм производит 25 миллионов новых клеток каждую секунду</div>
+        <div class="medical-fact">Печень может регенерировать до 75% своей массы</div>
+        <div class="medical-fact">Человеческий мозг использует 20% всей энергии организма</div>
+        <div class="medical-fact">В организме человека больше бактерий, чем собственных клеток</div>
+    </div>
+
+    <!-- Навигация -->
+    <nav class="navbar">
+        <div class="navbar-content">
+                        <a href="dashboard.html" class="logo" style="text-decoration: none; color: inherit;">🏥 MedLearn</a>
+            <div class="nav-links">
+                <a href="dashboard.html">Личный кабинет</a>
+                <a href="testing.html">Тестирование</a>
+                <a href="resources.html">Ресурсы</a>
+                <a href="profile.html">Профиль</a>
+                <button onclick="logout()" class="btn btn-secondary">Выйти</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="app-container">
+        <div class="page-header">
+            <h1>⭐ Подписки и тарифы</h1>
+            <p>Выберите подходящий план для эффективного изучения медицины</p>
+        </div>
+
+        <div class="content-wrapper">
+            <!-- Текущая подписка -->
+            <div class="card" style="margin-bottom: 2rem;">
+                <div class="card-header">
+                    <h2 class="card-title">📋 Текущая подписка</h2>
+                    <p class="card-subtitle">Информация о вашем плане</p>
+                </div>
+                <div class="card-body">
+                    <div class="grid grid-2" style="align-items: center;">
+                        <div>
+                            <h3 style="color: var(--primary-color); margin-bottom: 0.5rem;" id="currentPlan">Загрузка...</h3>
+                            <p style="color: var(--text-secondary); margin-bottom: 1rem;" id="planDescription">Описание плана</p>
+                            <div style="font-size: 0.9rem; color: var(--text-light);">
+                                <div>📅 Действует до: <span id="planExpiry">-</span></div>
+                                <div>💰 Стоимость: <span id="planPrice">-</span></div>
+                            </div>
+                        </div>
+                        <div style="text-align: right;">
+                            <div style="display: inline-block; padding: 0.5rem 1rem; background: var(--success-gradient); color: white; border-radius: 20px; font-weight: 500;" id="planStatus">
+                                ✅ Активна
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Планы подписок -->
+            <div class="grid grid-3">
+                <!-- Базовый план -->
+                <div class="card subscription-plan" data-plan="basic">
+                    <div class="card-header" style="text-align: center; background: var(--bg-secondary);">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">📚</div>
+                        <h3 class="card-title">Базовый</h3>
+                        <p class="card-subtitle">Для начинающих студентов</p>
+                        <div style="font-size: 2rem; font-weight: 700; color: var(--primary-color); margin-top: 1rem;">
+                            299₽ <span style="font-size: 1rem; font-weight: 400; color: var(--text-secondary);">/семестр</span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <ul style="list-style: none; padding: 0; margin-bottom: 2rem;">
+                            <li style="padding: 0.5rem 0; display: flex; align-items: center;">
+                                <span style="color: var(--success-color); margin-right: 0.5rem;">✅</span>
+                                Доступ ко всем тестам
+                            </li>
+                            <li style="padding: 0.5rem 0; display: flex; align-items: center;">
+                                <span style="color: var(--success-color); margin-right: 0.5rem;">✅</span>
+                                Базовые учебные материалы
+                            </li>
+                            <li style="padding: 0.5rem 0; display: flex; align-items: center;">
+                                <span style="color: var(--success-color); margin-right: 0.5rem;">✅</span>
+                                Статистика прогресса
+                            </li>
+                            <li style="padding: 0.5rem 0; display: flex; align-items: center;">
+                                <span style="color: var(--success-color); margin-right: 0.5rem;">✅</span>
+                                Система достижений
+                            </li>
+                            <li style="padding: 0.5rem 0; display: flex; align-items: center; opacity: 0.5;">
+                                <span style="color: var(--text-light); margin-right: 0.5rem;">❌</span>
+                                AI-ассистент
+                            </li>
+                            <li style="padding: 0.5rem 0; display: flex; align-items: center; opacity: 0.5;">
+                                <span style="color: var(--text-light); margin-right: 0.5rem;">❌</span>
+                                Премиум ресурсы
+                            </li>
+                        </ul>
+                        <button class="btn btn-primary" onclick="selectPlan('basic', 299)" style="width: 100%;">
+                            Выбрать план
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Премиум план -->
+                <div class="card subscription-plan featured" data-plan="premium" style="position: relative; border: 2px solid var(--primary-color);">
+                    <div style="position: absolute; top: -10px; left: 50%; transform: translateX(-50%); background: var(--primary-gradient); color: white; padding: 0.25rem 1rem; border-radius: 20px; font-size: 0.8rem; font-weight: 600;">
+                        ПОПУЛЯРНЫЙ
+                    </div>
+                    <div class="card-header" style="text-align: center; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">⭐</div>
+                        <h3 class="card-title" style="color: white;">Премиум</h3>
+                        <p style="opacity: 0.9;">Для серьезных студентов</p>
+                        <div style="font-size: 2rem; font-weight: 700; margin-top: 1rem;">
+                            599₽ <span style="font-size: 1rem; font-weight: 400; opacity: 0.8;">/семестр</span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <ul style="list-style: none; padding: 0; margin-bottom: 2rem;">
+                            <li style="padding: 0.5rem 0; display: flex; align-items: center;">
+                                <span style="color: var(--success-color); margin-right: 0.5rem;">✅</span>
+                                Все функции Базового
+                            </li>
+                            <li style="padding: 0.5rem 0; display: flex; align-items: center;">
+                                <span style="color: var(--success-color); margin-right: 0.5rem;">✅</span>
+                                AI-ассистент 24/7
+                            </li>
+                            <li style="padding: 0.5rem 0; display: flex; align-items: center;">
+                                <span style="color: var(--success-color); margin-right: 0.5rem;">✅</span>
+                                Премиум ресурсы
+                            </li>
+                            <li style="padding: 0.5rem 0; display: flex; align-items: center;">
+                                <span style="color: var(--success-color); margin-right: 0.5rem;">✅</span>
+                                Персональные рекомендации
+                            </li>
+                            <li style="padding: 0.5rem 0; display: flex; align-items: center;">
+                                <span style="color: var(--success-color); margin-right: 0.5rem;">✅</span>
+                                Приоритетная поддержка
+                            </li>
+                            <li style="padding: 0.5rem 0; display: flex; align-items: center;">
+                                <span style="color: var(--success-color); margin-right: 0.5rem;">✅</span>
+                                Экспорт результатов
+                            </li>
+                        </ul>
+                        <button class="btn btn-primary" onclick="selectPlan('premium', 599)" style="width: 100%; background: var(--primary-gradient);">
+                            Выбрать план
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Годовой план -->
+                <div class="card subscription-plan" data-plan="yearly">
+                    <div class="card-header" style="text-align: center; background: var(--warning-gradient); color: white;">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">🏆</div>
+                        <h3 class="card-title" style="color: white;">Годовой</h3>
+                        <p style="opacity: 0.9;">Максимальная экономия</p>
+                        <div style="font-size: 2rem; font-weight: 700; margin-top: 1rem;">
+                            999₽ <span style="font-size: 1rem; font-weight: 400; opacity: 0.8;">/год</span>
+                        </div>
+                        <div style="font-size: 0.9rem; opacity: 0.8; margin-top: 0.5rem;">
+                            Экономия 1200₽!
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <ul style="list-style: none; padding: 0; margin-bottom: 2rem;">
+                            <li style="padding: 0.5rem 0; display: flex; align-items: center;">
+                                <span style="color: var(--success-color); margin-right: 0.5rem;">✅</span>
+                                Все функции Премиум
+                            </li>
+                            <li style="padding: 0.5rem 0; display: flex; align-items: center;">
+                                <span style="color: var(--success-color); margin-right: 0.5rem;">✅</span>
+                                Годовой доступ
+                            </li>
+                            <li style="padding: 0.5rem 0; display: flex; align-items: center;">
+                                <span style="color: var(--success-color); margin-right: 0.5rem;">✅</span>
+                                Эксклюзивные материалы
+                            </li>
+                            <li style="padding: 0.5rem 0; display: flex; align-items: center;">
+                                <span style="color: var(--success-color); margin-right: 0.5rem;">✅</span>
+                                Сертификаты достижений
+                            </li>
+                            <li style="padding: 0.5rem 0; display: flex; align-items: center;">
+                                <span style="color: var(--success-color); margin-right: 0.5rem;">✅</span>
+                                Без рекламы
+                            </li>
+                            <li style="padding: 0.5rem 0; display: flex; align-items: center;">
+                                <span style="color: var(--success-color); margin-right: 0.5rem;">✅</span>
+                                Максимальная экономия
+                            </li>
+                        </ul>
+                        <button class="btn btn-primary" onclick="selectPlan('yearly', 999)" style="width: 100%; background: var(--warning-gradient);">
+                            Выбрать план
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FAQ -->
+            <div class="card" style="margin-top: 3rem;">
+                <div class="card-header">
+                    <h2 class="card-title">❓ Часто задаваемые вопросы</h2>
+                    <p class="card-subtitle">Ответы на популярные вопросы о подписках</p>
+                </div>
+                <div class="card-body">
+                    <div class="grid">
+                        <details style="border: 1px solid #e2e8f0; border-radius: 8px; padding: 1rem; margin-bottom: 1rem;">
+                            <summary style="cursor: pointer; font-weight: 600; color: var(--primary-color);">
+                                Можно ли отменить подписку?
+                            </summary>
+                            <p style="margin-top: 1rem; color: var(--text-secondary);">
+                                Да, вы можете отменить подписку в любое время. Доступ к функциям сохранится до окончания оплаченного периода.
+                            </p>
+                        </details>
+                        
+                        <details style="border: 1px solid #e2e8f0; border-radius: 8px; padding: 1rem; margin-bottom: 1rem;">
+                            <summary style="cursor: pointer; font-weight: 600; color: var(--primary-color);">
+                                Что включает AI-ассистент?
+                            </summary>
+                            <p style="margin-top: 1rem; color: var(--text-secondary);">
+                                AI-ассистент отвечает на вопросы по медицине, объясняет сложные концепции, помогает с подготовкой к экзаменам и дает персональные рекомендации.
+                            </p>
+                        </details>
+                        
+                        <details style="border: 1px solid #e2e8f0; border-radius: 8px; padding: 1rem; margin-bottom: 1rem;">
+                            <summary style="cursor: pointer; font-weight: 600; color: var(--primary-color);">
+                                Есть ли скидки для студентов?
+                            </summary>
+                            <p style="margin-top: 1rem; color: var(--text-secondary);">
+                                На данный момент все наши цены уже оптимизированы для студентов. Следите за акциями и специальными предложениями!
+                            </p>
+                        </details>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно подтверждения -->
+    <div id="subscriptionModal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 2000; align-items: center; justify-content: center;">
+        <div class="card" style="max-width: 500px; margin: 2rem;">
+            <div class="card-header">
+                <h2 class="card-title">Подтверждение подписки</h2>
+            </div>
+            <div class="card-body">
+                <p id="modalText">Вы выбрали план...</p>
+                <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                    <button onclick="closeModal()" class="btn btn-secondary">Отмена</button>
+                    <button onclick="confirmSubscription()" class="btn btn-primary">Подтвердить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/client.js"></script>
+    <script>
+        // Инициализация страницы подписок
+        document.addEventListener('DOMContentLoaded', function() {
+            checkAuth();
+            loadCurrentSubscription();
+        });
+
+        let selectedPlan = null;
+        let selectedPrice = null;
+
+        function selectPlan(planType, price) {
+            selectedPlan = planType;
+            selectedPrice = price;
+            
+            const planNames = {
+                'basic': 'Базовый',
+                'premium': 'Премиум', 
+                'yearly': 'Годовой'
+            };
+            
+            document.getElementById('modalText').textContent = 
+                `Вы выбрали план "${planNames[planType]}" за ${price}₽. Подтвердите покупку.`;
+            document.getElementById('subscriptionModal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('subscriptionModal').style.display = 'none';
+        }
+
+        async function confirmSubscription() {
+            try {
+                const response = await fetch('/api/subscriptions/purchase', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    },
+                    body: JSON.stringify({
+                        planType: selectedPlan,
+                        price: selectedPrice
+                    })
+                });
+
+                if (response.ok) {
+                    alert('Подписка успешно оформлена!');
+                    closeModal();
+                    loadCurrentSubscription();
+                } else {
+                    throw new Error('Ошибка при оформлении подписки');
+                }
+            } catch (error) {
+                alert('Произошла ошибка: ' + error.message);
+            }
+        }
+    </script>
+</body>
+</html>

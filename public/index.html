@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MedLearn - Революция в медицинском образовании</title>
+    <link rel="stylesheet" href="/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Медицинские факты на фоне -->
+    <div class="medical-facts-bg">
+        <div class="medical-fact">Человеческое сердце бьется около 100,000 раз в день</div>
+        <div class="medical-fact">В организме человека около 37 триллионов клеток</div>
+        <div class="medical-fact">Мозг потребляет 20% всей энергии тела</div>
+        <div class="medical-fact">Длина всех кровеносных сосудов составляет около 100,000 км</div>
+        <div class="medical-fact">Печень выполняет более 500 различных функций</div>
+    </div>
+
+    <!-- Навигация -->
+    <nav class="navbar">
+        <div class="navbar-content">
+            <div class="logo" onclick="goToUserArea()" style="cursor: pointer;">🏥 MedLearn</div>
+            <div class="nav-links" id="navLinks">
+                <a href="#features">Возможности</a>
+                <!-- Кнопки для неавторизованных пользователей -->
+                <a href="auth.html" class="btn btn-secondary" id="loginBtn">Войти</a>
+                <a href="register.html" class="btn btn-primary" id="registerBtn">Регистрация</a>
+                <!-- Кнопки для авторизованных пользователей -->
+                <a href="dashboard.html" class="btn btn-secondary" id="dashboardBtn" style="display: none;">Личный кабинет</a>
+                <button onclick="logoutAndUpdate()" class="btn btn-secondary" id="logoutBtn" style="display: none;">Выйти</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Главная секция -->
+    <section class="hero-section">
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1>Революция в медицинском образовании</h1>
+                <p>Интерактивное обучение, интеллектуальное тестирование и персональный AI-ассистент для будущих врачей. Изучайте медицину эффективно и с удовольствием.</p>
+                <div class="hero-actions">
+                    <a href="register.html" class="btn btn-primary">Начать обучение</a>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="medical-icon">🩺</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Секция возможностей -->
+    <section id="features" class="features-section">
+        <div class="features-content">
+            <h2 class="section-title">Наши возможности</h2>
+            <p class="section-subtitle">Современные инструменты для эффективного изучения медицинских дисциплин</p>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">📚</div>
+                    <h3>Интерактивные тесты</h3>
+                    <p>Более 1000+ вопросов по анатомии, физиологии, патологии и другим дисциплинам с подробными объяснениями</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🤖</div>
+                    <h3>AI-Ассистент</h3>
+                    <p>Персональный помощник на базе ИИ поможет разобрать сложные темы и ответит на любые вопросы</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3>Аналитика прогресса</h3>
+                    <p>Детальная статистика обучения, отслеживание слабых мест и рекомендации по улучшению</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🏆</div>
+                    <h3>Система достижений</h3>
+                    <p>Мотивирующие награды за успехи в обучении и прохождение важных этапов</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">📖</div>
+                    <h3>Библиотека ресурсов</h3>
+                    <p>Обширная коллекция учебных материалов: статьи, видео, атласы и справочники</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">👥</div>
+                    <h3>Сообщество</h3>
+                    <p>Общение с единомышленниками, обмен опытом и совместное решение сложных задач</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    </main>
+
+
+    <script src="client.js"></script>
+    <script>
+        // Умный переход по логотипу
+        function goToUserArea() {
+            const token = localStorage.getItem('token');
+            if (token) {
+                // Если пользователь авторизован - ведем в личный кабинет
+                window.location.href = 'dashboard.html';
+            } else {
+                // Если не авторизован - остаемся на главной или ведем к регистрации
+                window.location.href = 'auth.html';
+            }
+        }
+
+        // Функция обновления навигации в зависимости от статуса авторизации
+        function updateNavigation() {
+            const token = localStorage.getItem('token');
+            const user = localStorage.getItem('user');
+            
+            // Элементы для неавторизованных пользователей
+            const loginBtn = document.getElementById('loginBtn');
+            const registerBtn = document.getElementById('registerBtn');
+            
+            // Элементы для авторизованных пользователей  
+            const dashboardBtn = document.getElementById('dashboardBtn');
+            const logoutBtn = document.getElementById('logoutBtn');
+            
+            if (token && user) {
+                // Пользователь авторизован - показываем кнопки для авторизованных
+                if (loginBtn) loginBtn.style.display = 'none';
+                if (registerBtn) registerBtn.style.display = 'none';
+                if (dashboardBtn) dashboardBtn.style.display = 'inline-block';
+                if (logoutBtn) logoutBtn.style.display = 'inline-block';
+                
+                console.log('✅ Пользователь авторизован, показаны кнопки: Личный кабинет, Выйти');
+            } else {
+                // Пользователь не авторизован - показываем кнопки входа/регистрации
+                if (loginBtn) loginBtn.style.display = 'inline-block';
+                if (registerBtn) registerBtn.style.display = 'inline-block';
+                if (dashboardBtn) dashboardBtn.style.display = 'none';
+                if (logoutBtn) logoutBtn.style.display = 'none';
+                
+                console.log('❌ Пользователь не авторизован, показаны кнопки: Войти, Регистрация');
+            }
+        }
+
+        // Функция logoutAndUpdate определена в client.js
+
+        // Инициализация при загрузке страницы
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🏠 Главная страница загружена');
+            updateNavigation();
+            
+            // Обновляем навигацию при изменении localStorage (если пользователь авторизовался в другой вкладке)
+            window.addEventListener('storage', function(e) {
+                if (e.key === 'token' || e.key === 'user') {
+                    console.log('🔄 Обнаружено изменение авторизации, обновляем навигацию');
+                    updateNavigation();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Доступ ограничен - MedLearn</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .ban-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+        }
+        
+        .ban-modal {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            animation: modalAppear 0.5s ease-out;
+        }
+        
+        @keyframes modalAppear {
+            from {
+                opacity: 0;
+                transform: scale(0.8) translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+        
+        .ban-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+            color: #e74c3c;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        
+        .ban-title {
+            color: #2c3e50;
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+        
+        .ban-subtitle {
+            color: #7f8c8d;
+            font-size: 18px;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        
+        .ban-info {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+            border-left: 5px solid #e74c3c;
+        }
+        
+        .ban-reason {
+            font-size: 16px;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        
+        .ban-details {
+            font-size: 14px;
+            color: #7f8c8d;
+            line-height: 1.5;
+        }
+        
+        .ban-timer {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            color: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 25px 0;
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .permanent-ban {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+        }
+        
+        .timer-value {
+            font-size: 28px;
+            font-weight: 700;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .back-button {
+            background: linear-gradient(135deg, #74b9ff, #0984e3);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+        
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(116, 185, 255, 0.3);
+        }
+        
+        .contact-info {
+            margin-top: 30px;
+            padding: 20px;
+            background: #e3f2fd;
+            border-radius: 12px;
+            color: #1565c0;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        
+        .contact-link {
+            color: #1565c0;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .contact-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="ban-container">
+        <div class="ban-modal">
+            <div class="ban-icon" id="banIcon">🚫</div>
+            <h1 class="ban-title" id="banTitle">Доступ ограничен</h1>
+            <p class="ban-subtitle" id="banSubtitle">Ваш аккаунт временно заблокирован</p>
+            
+            <div class="ban-info">
+                <div class="ban-reason" id="banReason">
+                    Причина блокировки не указана
+                </div>
+                <div class="ban-details" id="banDetails"></div>
+            </div>
+            
+            <div class="ban-timer" id="banTimer" style="display: none;">
+                <div>Блокировка истекает через:</div>
+                <div class="timer-value" id="timerValue">00:00:00</div>
+                <div id="timerText">Автоматическая разблокировка</div>
+            </div>
+            
+            <div class="contact-info">
+                <strong>Возникли вопросы?</strong><br>
+                Обратитесь в службу поддержки:<br>
+                📧 Email: <a href="mailto:support@medlearn.ru" class="contact-link">support@medlearn.ru</a><br>
+                📞 Телефон: <a href="tel:+78001234567" class="contact-link">8-800-123-45-67</a>
+            </div>
+            
+            <button class="back-button" onclick="goToMainPage()">
+                🏠 На главную
+            </button>
+        </div>
+    </div>
+
+    <script>
+        let banData = null;
+        let timerInterval = null;
+
+        // Получение данных о бане из localStorage или URL параметров
+        function getBanData() {
+            // Проверяем localStorage
+            const storedBan = localStorage.getItem('banInfo');
+            if (storedBan) {
+                try {
+                    return JSON.parse(storedBan);
+                } catch (e) {
+                    console.error('Error parsing ban data:', e);
+                }
+            }
+            
+            // Проверяем URL параметры
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('banned')) {
+                return {
+                    ban_reason: urlParams.get('reason') || 'Нарушение правил платформы',
+                    banned_until: urlParams.get('until'),
+                    is_permanent: urlParams.get('permanent') === 'true'
+                };
+            }
+            
+            return null;
+        }
+
+        // Инициализация страницы бана
+        function initBanPage() {
+            banData = getBanData();
+            
+            if (!banData) {
+                // Если данных о бане нет, перенаправляем на главную
+                window.location.href = '/';
+                return;
+            }
+            
+            updateBanDisplay();
+            
+            if (!banData.is_permanent && banData.banned_until) {
+                startTimer();
+            }
+        }
+
+        // Обновление отображения информации о бане
+        function updateBanDisplay() {
+            const reasonEl = document.getElementById('banReason');
+            const detailsEl = document.getElementById('banDetails');
+            const timerEl = document.getElementById('banTimer');
+            const iconEl = document.getElementById('banIcon');
+            const titleEl = document.getElementById('banTitle');
+            const subtitleEl = document.getElementById('banSubtitle');
+            
+            // Устанавливаем причину блокировки
+            reasonEl.textContent = banData.ban_reason || 'Нарушение правил платформы';
+            
+            if (banData.is_permanent) {
+                // Постоянная блокировка
+                iconEl.textContent = '⛔';
+                titleEl.textContent = 'Постоянная блокировка';
+                subtitleEl.textContent = 'Ваш аккаунт заблокирован навсегда';
+                timerEl.style.display = 'block';
+                timerEl.className = 'ban-timer permanent-ban';
+                timerEl.innerHTML = `
+                    <div style="font-size: 24px; margin-bottom: 10px;">⚠️</div>
+                    <div style="font-size: 18px;">ПОСТОЯННАЯ БЛОКИРОВКА</div>
+                    <div style="font-size: 14px; margin-top: 10px; opacity: 0.8;">
+                        Разблокировка возможна только администратором
+                    </div>
+                `;
+                
+                detailsEl.innerHTML = `
+                    <strong>Тип:</strong> Постоянная блокировка<br>
+                    <strong>Дата блокировки:</strong> ${banData.banned_at ? 
+                        new Date(banData.banned_at).toLocaleString('ru-RU') : 'Неизвестно'}<br>
+                    <strong>Восстановление:</strong> Обратитесь в службу поддержки
+                `;
+            } else if (banData.banned_until) {
+                // Временная блокировка
+                const untilDate = new Date(banData.banned_until);
+                const now = new Date();
+                
+                if (untilDate <= now) {
+                    // Бан истек - показываем сообщение и перенаправляем
+                    showExpiredBan();
+                    return;
+                }
+                
+                detailsEl.innerHTML = `
+                    <strong>Тип:</strong> Временная блокировка<br>
+                    <strong>Дата блокировки:</strong> ${banData.banned_at ? 
+                        new Date(banData.banned_at).toLocaleString('ru-RU') : 'Неизвестно'}<br>
+                    <strong>Блокировка до:</strong> ${untilDate.toLocaleString('ru-RU')}
+                `;
+            } else {
+                // Неопределенная блокировка
+                detailsEl.innerHTML = `
+                    <strong>Тип:</strong> Блокировка администратором<br>
+                    <strong>Дата блокировки:</strong> ${banData.banned_at ? 
+                        new Date(banData.banned_at).toLocaleString('ru-RU') : 'Неизвестно'}
+                `;
+            }
+        }
+
+        // Запуск таймера обратного отсчета
+        function startTimer() {
+            if (!banData.banned_until) return;
+            
+            const timerEl = document.getElementById('banTimer');
+            const timerValueEl = document.getElementById('timerValue');
+            
+            timerEl.style.display = 'block';
+            
+            function updateTimer() {
+                const now = new Date();
+                const until = new Date(banData.banned_until);
+                const diff = until.getTime() - now.getTime();
+                
+                if (diff <= 0) {
+                    // Бан истек
+                    clearInterval(timerInterval);
+                    showExpiredBan();
+                    return;
+                }
+                
+                const hours = Math.floor(diff / (1000 * 60 * 60));
+                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+                
+                timerValueEl.textContent = 
+                    `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            }
+            
+            updateTimer();
+            timerInterval = setInterval(updateTimer, 1000);
+        }
+
+        // Показать сообщение об истечении бана
+        function showExpiredBan() {
+            const modal = document.querySelector('.ban-modal');
+            modal.innerHTML = `
+                <div class="ban-icon" style="color: #27ae60;">✅</div>
+                <h1 class="ban-title" style="color: #27ae60;">Блокировка снята</h1>
+                <p class="ban-subtitle">Ваш аккаунт разблокирован</p>
+                
+                <div style="background: #d5f4e6; border-radius: 15px; padding: 25px; margin: 20px 0; border-left: 5px solid #27ae60;">
+                    <div style="font-size: 16px; color: #2c3e50; margin-bottom: 15px; font-weight: 600;">
+                        🎉 Добро пожаловать обратно!
+                    </div>
+                    <div style="font-size: 14px; color: #7f8c8d; line-height: 1.5;">
+                        Срок блокировки истек. Теперь вы можете войти в систему.<br>
+                        Пожалуйста, соблюдайте правила платформы.
+                    </div>
+                </div>
+                
+                <button class="back-button" onclick="goToLogin()" style="background: linear-gradient(135deg, #27ae60, #2ecc71);">
+                    🔑 Войти в систему
+                </button>
+            `;
+            
+            // Очищаем информацию о бане
+            localStorage.removeItem('banInfo');
+            
+            // Автоматическое перенаправление через 5 секунд
+            setTimeout(() => {
+                goToLogin();
+            }, 5000);
+        }
+
+        // Переход на главную страницу
+        function goToMainPage() {
+            // Очищаем токен авторизации если есть
+            localStorage.removeItem('token');
+            localStorage.removeItem('banInfo');
+            window.location.href = '/';
+        }
+
+        // Переход на страницу входа
+        function goToLogin() {
+            localStorage.removeItem('banInfo');
+            window.location.href = '/';
+        }
+
+        // Проверка статуса пользователя через API
+        async function checkUserStatus() {
+            try {
+                const token = localStorage.getItem('token');
+                if (!token) return;
+                
+                const response = await fetch('/api/auth/status', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                
+                if (response.status === 403) {
+                    const data = await response.json();
+                    if (data.error === 'USER_BANNED') {
+                        // Обновляем информацию о бане
+                        banData = data;
+                        localStorage.setItem('banInfo', JSON.stringify(data));
+                        updateBanDisplay();
+                        
+                        if (!data.is_permanent && data.banned_until) {
+                            if (timerInterval) clearInterval(timerInterval);
+                            startTimer();
+                        }
+                    }
+                } else if (response.ok) {
+                    // Пользователь не заблокирован - перенаправляем
+                    localStorage.removeItem('banInfo');
+                    window.location.href = '/dashboard.html';
+                }
+            } catch (error) {
+                console.error('Error checking user status:', error);
+            }
+        }
+
+        // Инициализация при загрузке страницы
+        document.addEventListener('DOMContentLoaded', () => {
+            initBanPage();
+            
+            // Проверяем статус каждые 30 секунд
+            setInterval(checkUserStatus, 30000);
+        });
+
+        // Очистка при выходе со страницы
+        window.addEventListener('beforeunload', () => {
+            if (timerInterval) {
+                clearInterval(timerInterval);
+            }
+        });
+    </script>
+</body>
+</html>

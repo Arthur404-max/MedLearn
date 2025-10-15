@@ -1,0 +1,208 @@
+{
+  "version": 1760291811426,
+  "assets": [
+    {
+      "path": "index.html",
+      "hash": "ce95d82c",
+      "size": 6106,
+      "mimeType": "text/html",
+      "cacheControl": "public, max-age=300"
+    },
+    {
+      "path": "styles.css",
+      "hash": "fcbab8dd",
+      "size": 11576,
+      "mimeType": "text/css",
+      "cacheControl": "public, max-age=31536000, immutable"
+    },
+    {
+      "path": "client.js",
+      "hash": "143f18c1",
+      "size": 24229,
+      "mimeType": "application/javascript",
+      "cacheControl": "public, max-age=31536000, immutable"
+    },
+    {
+      "path": "pages/dashboard.html",
+      "hash": "c436b71d",
+      "size": 4696,
+      "mimeType": "text/html",
+      "cacheControl": "public, max-age=300"
+    },
+    {
+      "path": "pages/testing.html",
+      "hash": "08018b65",
+      "size": 5711,
+      "mimeType": "text/html",
+      "cacheControl": "public, max-age=300"
+    },
+    {
+      "path": "pages/dashboard.css",
+      "hash": "9c2c08df",
+      "size": 2556,
+      "mimeType": "text/css",
+      "cacheControl": "public, max-age=31536000, immutable"
+    },
+    {
+      "path": "pages/testing.css",
+      "hash": "6ed898de",
+      "size": 4296,
+      "mimeType": "text/css",
+      "cacheControl": "public, max-age=31536000, immutable"
+    },
+    {
+      "path": "pages/resources.html",
+      "hash": "0bb0a751",
+      "size": 3913,
+      "mimeType": "text/html",
+      "cacheControl": "public, max-age=300"
+    },
+    {
+      "path": "pages/resources.css",
+      "hash": "3fbd9129",
+      "size": 3166,
+      "mimeType": "text/css",
+      "cacheControl": "public, max-age=31536000, immutable"
+    },
+    {
+      "path": "pages/subscription.html",
+      "hash": "75aab3e4",
+      "size": 6229,
+      "mimeType": "text/html",
+      "cacheControl": "public, max-age=300"
+    },
+    {
+      "path": "pages/subscription.css",
+      "hash": "5e86ea6b",
+      "size": 4446,
+      "mimeType": "text/css",
+      "cacheControl": "public, max-age=31536000, immutable"
+    },
+    {
+      "path": "components/ai-assistant.css",
+      "hash": "59025627",
+      "size": 1502,
+      "mimeType": "text/css",
+      "cacheControl": "public, max-age=31536000, immutable"
+    },
+    {
+      "path": "components/navbar.css",
+      "hash": "526922dc",
+      "size": 1400,
+      "mimeType": "text/css",
+      "cacheControl": "public, max-age=31536000, immutable"
+    },
+    {
+      "path": "js/auth.js",
+      "hash": "a363159d",
+      "size": 1382,
+      "mimeType": "application/javascript",
+      "cacheControl": "public, max-age=31536000, immutable"
+    },
+    {
+      "path": "js/dashboard.js",
+      "hash": "0ee3b410",
+      "size": 3961,
+      "mimeType": "application/javascript",
+      "cacheControl": "public, max-age=31536000, immutable"
+    },
+    {
+      "path": "js/testing.js",
+      "hash": "794769ac",
+      "size": 10632,
+      "mimeType": "application/javascript",
+      "cacheControl": "public, max-age=31536000, immutable"
+    },
+    {
+      "path": "js/resources.js",
+      "hash": "92358e91",
+      "size": 3830,
+      "mimeType": "application/javascript",
+      "cacheControl": "public, max-age=31536000, immutable"
+    },
+    {
+      "path": "js/subscription.js",
+      "hash": "3f687a97",
+      "size": 6026,
+      "mimeType": "application/javascript",
+      "cacheControl": "public, max-age=31536000, immutable"
+    },
+    {
+      "path": "auth.html",
+      "hash": "c4d6bfdf",
+      "size": 3308,
+      "mimeType": "text/html",
+      "cacheControl": "public, max-age=300"
+    },
+    {
+      "path": "register.html",
+      "hash": "7ee13a4a",
+      "size": 4128,
+      "mimeType": "text/html",
+      "cacheControl": "public, max-age=300"
+    },
+    {
+      "path": "testing.html",
+      "hash": "2ce53662",
+      "size": 8047,
+      "mimeType": "text/html",
+      "cacheControl": "public, max-age=300"
+    },
+    {
+      "path": "dashboard.html",
+      "hash": "250a018e",
+      "size": 10508,
+      "mimeType": "text/html",
+      "cacheControl": "public, max-age=300"
+    },
+    {
+      "path": "subscription.html",
+      "hash": "7b51ad11",
+      "size": 19951,
+      "mimeType": "text/html",
+      "cacheControl": "public, max-age=300"
+    },
+    {
+      "path": "mobile-access.html",
+      "hash": "70c8336c",
+      "size": 2298,
+      "mimeType": "text/html",
+      "cacheControl": "public, max-age=300"
+    },
+    {
+      "path": "resources.html",
+      "hash": "72d14351",
+      "size": 15888,
+      "mimeType": "text/html",
+      "cacheControl": "public, max-age=300"
+    },
+    {
+      "path": "index-new.html",
+      "hash": "8ba6057d",
+      "size": 5537,
+      "mimeType": "text/html",
+      "cacheControl": "public, max-age=300"
+    },
+    {
+      "path": "verify-email.html",
+      "hash": "467ed200",
+      "size": 9113,
+      "mimeType": "text/html",
+      "cacheControl": "public, max-age=300"
+    },
+    {
+      "path": "profile.html",
+      "hash": "59afb08a",
+      "size": 21471,
+      "mimeType": "text/html",
+      "cacheControl": "public, max-age=300"
+    },
+    {
+      "path": "admin-redirect.html",
+      "hash": "e67ea1c2",
+      "size": 5479,
+      "mimeType": "text/html",
+      "cacheControl": "public, max-age=300"
+    }
+  ]
+}

@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Сброс системы - MedLearn</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .reset-container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 500px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        .reset-icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+        }
+        
+        .reset-title {
+            color: #2c3e50;
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+        
+        .reset-description {
+            color: #7f8c8d;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        
+        .reset-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .reset-button {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .reset-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(231, 76, 60, 0.3);
+        }
+        
+        .status-message {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            font-weight: 600;
+        }
+        
+        .success {
+            background: #d5f4e6;
+            color: #27ae60;
+            border-left: 5px solid #27ae60;
+        }
+        
+        .info {
+            background: #e3f2fd;
+            color: #1565c0;
+            border-left: 5px solid #1565c0;
+        }
+        
+        .back-button {
+            background: linear-gradient(135deg, #74b9ff, #0984e3);
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="reset-container">
+        <div class="reset-icon">🔧</div>
+        <h1 class="reset-title">Сброс системы</h1>
+        <p class="reset-description">
+            Если у вас проблемы с сайтом (красное окно, ошибки авторизации), 
+            используйте эти инструменты для сброса системы.
+        </p>
+        
+        <div class="reset-actions">
+            <button class="reset-button" onclick="clearLocalStorage()">
+                🗑️ Очистить данные браузера
+            </button>
+            
+            <button class="reset-button" onclick="clearAuthData()">
+                🔑 Сбросить авторизацию
+            </button>
+            
+            <button class="reset-button" onclick="fullReset()">
+                🚀 Полный сброс + перезагрузка
+            </button>
+        </div>
+        
+        <div id="statusMessage" style="display: none;"></div>
+        
+        <button class="reset-button back-button" onclick="goHome()">
+            🏠 Вернуться на главную
+        </button>
+    </div>
+
+    <script>
+        function showMessage(text, type = 'success') {
+            const messageEl = document.getElementById('statusMessage');
+            messageEl.textContent = text;
+            messageEl.className = `status-message ${type}`;
+            messageEl.style.display = 'block';
+            
+            setTimeout(() => {
+                messageEl.style.display = 'none';
+            }, 3000);
+        }
+        
+        function clearLocalStorage() {
+            try {
+                localStorage.clear();
+                sessionStorage.clear();
+                showMessage('✅ Данные браузера очищены');
+            } catch (error) {
+                showMessage('❌ Ошибка очистки: ' + error.message, 'error');
+            }
+        }
+        
+        function clearAuthData() {
+            try {
+                localStorage.removeItem('token');
+                localStorage.removeItem('user');
+                localStorage.removeItem('banInfo');
+                sessionStorage.clear();
+                showMessage('✅ Данные авторизации сброшены');
+            } catch (error) {
+                showMessage('❌ Ошибка сброса: ' + error.message, 'error');
+            }
+        }
+        
+        function fullReset() {
+            try {
+                // Очищаем все данные
+                localStorage.clear();
+                sessionStorage.clear();
+                
+                // Очищаем cookies
+                document.cookie.split(";").forEach(function(c) { 
+                    document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); 
+                });
+                
+                showMessage('✅ Полный сброс выполнен', 'success');
+                
+                setTimeout(() => {
+                    window.location.href = '/';
+                    window.location.reload(true);
+                }, 2000);
+                
+            } catch (error) {
+                showMessage('❌ Ошибка полного сброса: ' + error.message, 'error');
+            }
+        }
+        
+        function goHome() {
+            window.location.href = '/';
+        }
+        
+        // Автоматическая проверка проблем
+        document.addEventListener('DOMContentLoaded', function() {
+            const hasToken = localStorage.getItem('token');
+            const hasBanInfo = localStorage.getItem('banInfo');
+            const hasUserData = localStorage.getItem('user');
+            
+            let issues = [];
+            
+            if (hasBanInfo) {
+                issues.push('🚫 Найдена информация о бане');
+            }
+            
+            if (hasToken && !hasUserData) {
+                issues.push('⚠️ Токен без данных пользователя');
+            }
+            
+            if (issues.length > 0) {
+                const messageEl = document.getElementById('statusMessage');
+                messageEl.innerHTML = `
+                    <strong>Обнаружены проблемы:</strong><br>
+                    ${issues.join('<br>')}
+                `;
+                messageEl.className = 'status-message info';
+                messageEl.style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>
