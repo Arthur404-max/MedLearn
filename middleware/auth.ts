@@ -60,7 +60,7 @@ export const authenticateToken = async (req: Request, res: Response, next: NextF
         }
         
         const result = await pool.query(
-            'SELECT id, email, is_banned, banned_reason, role FROM users WHERE id = $1',
+            'SELECT id, email, is_banned, ban_reason, role FROM users WHERE id = $1',
             [userId]
         );
 
@@ -76,7 +76,7 @@ export const authenticateToken = async (req: Request, res: Response, next: NextF
             logAuthEvent('banned_user_attempt', dbUser.id, dbUser.email, req.ip, false);
             return res.status(403).json({ 
                 message: 'Аккаунт заблокирован', 
-                reason: dbUser.banned_reason || 'Причина не указана',
+                reason: dbUser.ban_reason || 'Причина не указана',
                 banned: true 
             });
         }

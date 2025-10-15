@@ -5,17 +5,74 @@ import { validateUser } from '../middleware/validateUser';
 
 const router = express.Router();
 
+const RESOURCE_TYPE_MAP: Record<string, string> = {
+    article: 'articles',
+    articles: 'articles',
+    video: 'videos',
+    videos: 'videos',
+    book: 'books',
+    books: 'books',
+    reference: 'tools',
+    tool: 'tools',
+    tools: 'tools'
+};
+
+let hasIsPublishedColumn: boolean | null = null;
+
+const ensureIsPublishedColumn = async (): Promise<boolean> => {
+    if (hasIsPublishedColumn !== null) {
+        return hasIsPublishedColumn;
+    }
+
+    const result = await pool.query(
+        `SELECT EXISTS (
+            SELECT 1
+            FROM information_schema.columns
+            WHERE table_name = 'resources'
+              AND column_name = 'is_published'
+        ) AS column_exists`
+    );
+
+    hasIsPublishedColumn = Boolean(result.rows[0]?.column_exists);
+    return hasIsPublishedColumn;
+};
+
+const normalizeResourceType = (type?: string | null) => {
+    if (!type) {
+        return 'articles';
+    }
+    const normalized = type.toLowerCase();
+    return RESOURCE_TYPE_MAP[normalized] || normalized;
+};
+
+const mapResourceForClient = (resource: any) => {
+    const type = normalizeResourceType(resource.type || resource.resource_type);
+    const date = resource.date || resource.created_at || new Date();
+
+    return {
+        ...resource,
+        type,
+        date,
+        image: resource.image || resource.thumbnail_url || '',
+        author: resource.author || 'MedLearn Team',
+        url: resource.url || resource.link || '#'
+    };
+};
+
 // Получение всех ресурсов
 router.get('/', async (req, res) => {
     try {
         console.log('📚 Запрос всех ресурсов...');
-        const result = await pool.query(`
-            SELECT * FROM resources 
-            WHERE is_published = true
-            ORDER BY created_at DESC
-        `);
-        console.log('✅ Найдено ресурсов:', result.rows.length);
-        res.json(result.rows);
+        const hasColumn = await ensureIsPublishedColumn();
+        const queryText = hasColumn
+            ? `SELECT * FROM resources WHERE COALESCE(is_published, true) = true ORDER BY created_at DESC`
+            : `SELECT * FROM resources ORDER BY created_at DESC`;
+
+        const result = await pool.query(queryText);
+        const normalized = result.rows.map(mapResourceForClient);
+
+        console.log('✅ Найдено ресурсов:', normalized.length);
+        res.json(normalized);
     } catch (error) {
         console.error('Error fetching resources:', error);
         res.status(500).json({ message: 'Internal server error' });
